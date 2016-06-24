@@ -15,10 +15,12 @@ class SettingsTableViewController: UITableViewController {
     var defaultTipPercentage:Int!
     var minTipPercentage:Int!
     var maxTipPercentage:Int!
+    var reverseSwipe:Bool!
     
     @IBOutlet weak var txtDefault: UITextField!
     @IBOutlet weak var txtMin: UITextField!
     @IBOutlet weak var txtMax: UITextField!
+    @IBOutlet weak var switchSwipe: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,12 +37,19 @@ class SettingsTableViewController: UITableViewController {
     
     func onCreate() {
         loadData()
+        if reverseSwipe == true {
+            switchSwipe.setOn(true, animated: false)
+        } else {
+            switchSwipe.setOn(false, animated: false)
+        }
     }
     
     func loadData() {
         defaultTipPercentage = userDefault.objectForKey("defaultTipPercentage") as! Int
         minTipPercentage = userDefault.objectForKey("minTipPercentage") as! Int
         maxTipPercentage = userDefault.objectForKey("maxTipPercentage") as! Int
+        reverseSwipe = userDefault.objectForKey("reverseSwipe") as! Bool
+        
         txtDefault.text = String(defaultTipPercentage)
         txtMin.text = String(minTipPercentage)
         txtMax.text = String(maxTipPercentage)
@@ -62,16 +71,28 @@ class SettingsTableViewController: UITableViewController {
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        if section == 0 {
+            return 3
+        }
+        else if section == 1 {
+            return 1
+        }
+        return 0
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Tip percentage"
+        if section == 0 {
+            return "Tip percentage"
+        }
+        else if section == 1 {
+            return "Swipe"
+        }
+        return ""
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -79,6 +100,16 @@ class SettingsTableViewController: UITableViewController {
         saveData()
     }
     
+    @IBAction func onSwipeChanged(sender: UISwitch) {
+        if switchSwipe.on {
+            userDefault.setValue(true, forKey: "reverseSwipe")
+            print("ON")
+        }
+        else {
+            userDefault.setValue(false, forKey: "reverseSwipe")
+            print("OFF")
+        }
+    }
     
     @IBAction func onEditingDidEnd(sender: AnyObject) {
         defaultTipPercentage = Int(txtDefault.text!)

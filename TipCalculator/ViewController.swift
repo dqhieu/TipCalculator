@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     var tip:Double!
     var totalAmount:Double!
     var formatter:NSNumberFormatter!
+    var reverseSwipe:Bool! = false
     
     @IBOutlet weak var txtBill: UITextField!
     @IBOutlet weak var lblTipPercentage: UILabel!
@@ -86,6 +87,7 @@ class ViewController: UIViewController {
         userDefault.setValue(minTipPercentage, forKey: "minTipPercentage")
         userDefault.setValue(maxTipPercentage, forKey: "maxTipPercentage")
         //userDefault.setValue(billAmount, forKey: "billAmount")
+        userDefault.setValue(reverseSwipe, forKey: "reverseSwipe")
         print("save data")
     }
     
@@ -94,6 +96,7 @@ class ViewController: UIViewController {
         minTipPercentage = userDefault.objectForKey("minTipPercentage") as! Int
         maxTipPercentage = userDefault.objectForKey("maxTipPercentage") as! Int
         //billAmount = userDefault.objectForKey("billAmount") as! Double
+        reverseSwipe = userDefault.objectForKey("reverseSwipe") as! Bool
         print("load data")
     }
 
@@ -125,7 +128,8 @@ class ViewController: UIViewController {
             tipPercentageTapStart = defaultTipPercentage
         }
         else if (recognizer.state == .Changed) {
-            defaultTipPercentage = Int(CGFloat(tipPercentageTapStart) + translation.x / 20)
+            let reverse = reverseSwipe == true ? -1 : 1
+            defaultTipPercentage = Int(CGFloat(tipPercentageTapStart) + CGFloat(reverse) * translation.x / 20)
             if (defaultTipPercentage < minTipPercentage) {
                 defaultTipPercentage = minTipPercentage
             }
