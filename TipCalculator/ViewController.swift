@@ -30,7 +30,15 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         userDefault = NSUserDefaults()
         // Do any additional setup after loading the view, typically from a nib.
+        runAnimation()
         onCreate()
+    }
+    
+    func runAnimation() {
+        self.view.alpha = 0
+        UIView.animateWithDuration(0.4, animations: {
+            self.view.alpha = 1
+        })
     }
     
     func onCreate() {
@@ -40,6 +48,12 @@ class ViewController: UIViewController {
         loadData()
         
         initFormatter()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        loadData()
+        lblTipPercentage.text = String(defaultTipPercentage) + "%"
+        onBillChanged(self)
     }
     
     func initFormatter() {
@@ -128,12 +142,12 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    override func viewWillAppear(animated: Bool) {
+    
+    override func viewDidAppear(animated: Bool) {
         txtBill.becomeFirstResponder()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewDidDisappear(animated: Bool) {
         saveData()
     }
 }
