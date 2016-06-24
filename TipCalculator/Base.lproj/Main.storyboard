@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DJ1-Q5-lje" userLabel="Txt Bill Amount">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="DJ1-Q5-lje" userLabel="Txt Bill Amount">
                                 <rect key="frame" x="16" y="72" width="288" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="uds-Sy-HF0"/>
@@ -52,6 +52,7 @@
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rhf-U9-uIz" userLabel="Lbl Total Amount">
                                         <rect key="frame" x="30" y="39" width="274" height="90"/>
+                                        <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="90" id="tlq-WD-Rlp"/>
                                         </constraints>
@@ -76,6 +77,9 @@
                                     <constraint firstItem="gry-5N-8C7" firstAttribute="leading" secondItem="bYH-92-lTT" secondAttribute="leading" constant="10" id="lk8-9I-Q7r"/>
                                     <constraint firstItem="grV-rX-29t" firstAttribute="top" secondItem="bYH-92-lTT" secondAttribute="top" constant="5" id="mym-Sb-v9Y"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="NPP-Do-Lzf" appends="YES" id="ZpH-Ri-gzG"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.93840526680000003" green="1" blue="0.97423579959999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -103,6 +107,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="NPP-Do-Lzf">
+                    <connections>
+                        <action selector="onPanGesture:" destination="BYZ-38-t0r" id="yhZ-tU-Ih9"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="809" y="1059"/>
         </scene>

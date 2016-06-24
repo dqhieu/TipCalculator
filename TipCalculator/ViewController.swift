@@ -71,7 +71,7 @@ class ViewController: UIViewController {
         userDefault.setValue(defaultTipPercentage, forKey: "defaultTipPercentage")
         userDefault.setValue(minTipPercentage, forKey: "minTipPercentage")
         userDefault.setValue(maxTipPercentage, forKey: "maxTipPercentage")
-        userDefault.setValue(billAmount, forKey: "billAmount")
+        //userDefault.setValue(billAmount, forKey: "billAmount")
         print("save data")
     }
     
@@ -79,7 +79,7 @@ class ViewController: UIViewController {
         defaultTipPercentage = userDefault.objectForKey("defaultTipPercentage") as! Int
         minTipPercentage = userDefault.objectForKey("minTipPercentage") as! Int
         maxTipPercentage = userDefault.objectForKey("maxTipPercentage") as! Int
-        billAmount = userDefault.objectForKey("billAmount") as! Double
+        //billAmount = userDefault.objectForKey("billAmount") as! Double
         print("load data")
     }
 
@@ -104,6 +104,26 @@ class ViewController: UIViewController {
         lblTotalAmount.text = formatter.stringFromNumber(totalAmount)
     }
     
+    
+    @IBAction func onPanGesture(recognizer: UIPanGestureRecognizer) {
+        let translation = recognizer.translationInView(self.view)
+        if (recognizer.state == .Began) {
+            tipPercentageTapStart = defaultTipPercentage
+        }
+        else if (recognizer.state == .Changed) {
+            defaultTipPercentage = Int(CGFloat(tipPercentageTapStart) + translation.x / 20)
+            if (defaultTipPercentage < minTipPercentage) {
+                defaultTipPercentage = minTipPercentage
+            }
+            else if (defaultTipPercentage > maxTipPercentage) {
+                defaultTipPercentage = maxTipPercentage
+            }
+            lblTipPercentage.text = String(defaultTipPercentage) + "%"
+            onBillChanged(self)
+        }
+
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -111,6 +131,10 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         txtBill.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        saveData()
     }
 }
 
