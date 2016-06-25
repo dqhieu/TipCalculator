@@ -63,9 +63,11 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
     func reloadData() {
         billAmount = userDefault.objectForKey("billAmount") as! Double
-        txtBill.text = String(Int(billAmount))
-        calculateBill()
-        displayResult()
+        if billAmount != 0 {
+            txtBill.text = String(Int(billAmount))
+            calculateBill()
+            displayResult()
+        }
     }
     
     func canReloadData()->Bool {
