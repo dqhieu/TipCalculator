@@ -1,9 +1,5 @@
 # Pre-work - TipCalculator
 
-> HINT: Please
-> - include this README.md in your project and fill out the information.
-> - remove all the HINT blocks in this file.
-
 TipCalculator is a tip calculator application for iOS.
 
 Submitted by: dqhieu
@@ -11,8 +7,6 @@ Submitted by: dqhieu
 Time spent: 10 hours spent in total
 
 ## User Stories
-
-> HINT: mark the items you completed with [x]
 
 The following **required** functionality is complete:
 
@@ -33,14 +27,8 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
-> HINT: You can put a `walkthrough.gif` file in your project folder, add to git, and use the following syntax to embed it:
-
-> `![Video Walkthrough](walkthrough.gif)`
-
-> You can also upload your image to imgur.com and embed the link here.
-
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](path/to/your/gif)
+![Video Walkthrough](walkthrough.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
