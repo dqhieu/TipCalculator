@@ -22,6 +22,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     var reverseSwipe:Bool! = false
     var peoplePicker:UIPickerView!
     var txtTotalAmountPerPeople:UITextField!
+    var timeIntervalToReload:NSTimeInterval! = 60*10 // 10 mins
     
     var peoplePickerData:[String]!
     
@@ -50,9 +51,34 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         initFormatter()
         if (isFirstRun()) {
             setupFirstRun()
+        } else {
+            // Load last bill amount if less than 10 mins
+            if canReloadData() {
+                reloadData()
+            }
         }
         loadData()
         initPeoplePickerData()
+    }
+    
+    func reloadData() {
+        billAmount = userDefault.objectForKey("billAmount") as! Double
+        txtBill.text = String(Int(billAmount))
+        calculateBill()
+        displayResult()
+    }
+    
+    func canReloadData()->Bool {
+        let lastRunDate = userDefault.objectForKey("lastRunDate") as! NSDate
+        //print("Last Rune Date")
+        //print(lastRunDate)
+        //print(NSDate())
+        //print((0 - lastRunDate.timeIntervalSinceNow))
+        if (0 - lastRunDate.timeIntervalSinceNow) < timeIntervalToReload {
+            //print("Reload")
+            return true
+        }
+        return false
     }
     
     func initPeoplePickerData() {
@@ -98,18 +124,20 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         userDefault.setValue(defaultTipPercentage, forKey: "defaultTipPercentage")
         userDefault.setValue(minTipPercentage, forKey: "minTipPercentage")
         userDefault.setValue(maxTipPercentage, forKey: "maxTipPercentage")
-        //userDefault.setValue(billAmount, forKey: "billAmount")
         userDefault.setValue(reverseSwipe, forKey: "reverseSwipe")
-        print("save data")
+        userDefault.setValue(NSDate(), forKey: "lastRunDate")
+        userDefault.setValue(billAmount, forKey: "billAmount")
+        
+        userDefault.synchronize()
+        //print("save data")
     }
     
     func loadData() {
         defaultTipPercentage = userDefault.objectForKey("defaultTipPercentage") as! Int
         minTipPercentage = userDefault.objectForKey("minTipPercentage") as! Int
         maxTipPercentage = userDefault.objectForKey("maxTipPercentage") as! Int
-        //billAmount = userDefault.objectForKey("billAmount") as! Double
         reverseSwipe = userDefault.objectForKey("reverseSwipe") as! Bool
-        print("load data")
+        //print("load data")
     }
 
     @IBAction func onBillChanged(sender: AnyObject) {
@@ -220,8 +248,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         let pickerLabel = UILabel()
         pickerLabel.textColor = UIColor.blackColor()
         pickerLabel.text = peoplePickerData[row]
-        // pickerLabel.font = UIFont(name: pickerLabel.font.fontName, size: 15)
-        pickerLabel.font = UIFont(name: "Avenir Next Ultra Light", size: 30) // In this use your custom font
+        pickerLabel.font = UIFont(name: "Avenir Next Ultra Light", size: 30)
         pickerLabel.textAlignment = NSTextAlignment.Center
         return pickerLabel
     }
