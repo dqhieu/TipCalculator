@@ -112,6 +112,19 @@ class SettingsTableViewController: UITableViewController {
     }
     
     @IBAction func onEditingDidEnd(sender: AnyObject) {
+        
+        if txtDefault.text == "" {
+            txtDefault.text = "0"
+        }
+        
+        if txtMin.text == "" {
+            txtMin.text = "0"
+        }
+        
+        if txtMax.text == "" {
+            txtMax.text = "100"
+        }
+        
         defaultTipPercentage = Int(txtDefault.text!)
         minTipPercentage = Int(txtMin.text!)
         maxTipPercentage = Int(txtMax.text!)
