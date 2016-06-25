@@ -128,6 +128,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         userDefault.setValue(maxTipPercentage, forKey: "maxTipPercentage")
         userDefault.setValue(reverseSwipe, forKey: "reverseSwipe")
         userDefault.setValue(NSDate(), forKey: "lastRunDate")
+        if txtBill.text == "" {
+            billAmount = 0
+        }
         userDefault.setValue(billAmount, forKey: "billAmount")
         
         userDefault.synchronize()

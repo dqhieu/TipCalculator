@@ -28,7 +28,7 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 - [X] Swipe to change tip percentage
-- [X] Swipe to change number of people
+- [X] Change number of people
 - [X] Reverse swipe in settings view
 
 ## Video Walkthrough
