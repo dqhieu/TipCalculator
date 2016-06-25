@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     var userDefault:NSUserDefaults!
     var defaultTipPercentage:Int! = 20
@@ -16,10 +16,14 @@ class ViewController: UIViewController {
     var maxTipPercentage:Int! = 30
     var tipPercentageTapStart:Int!
     var billAmount:Double! = 0
-    var tip:Double!
-    var totalAmount:Double!
+    var tip:Double! = 0
+    var totalAmount:Double! = 0
     var formatter:NSNumberFormatter!
     var reverseSwipe:Bool! = false
+    var peoplePicker:UIPickerView!
+    var txtTotalAmountPerPeople:UITextField!
+    
+    var peoplePickerData:[String]!
     
     @IBOutlet weak var txtBill: UITextField!
     @IBOutlet weak var lblTipPercentage: UILabel!
@@ -43,12 +47,20 @@ class ViewController: UIViewController {
     }
     
     func onCreate() {
+        initFormatter()
         if (isFirstRun()) {
             setupFirstRun()
         }
         loadData()
-        
-        initFormatter()
+        initPeoplePickerData()
+    }
+    
+    func initPeoplePickerData() {
+        peoplePickerData = []
+        let maxPerson:Int = 99
+        for index in 1...maxPerson {
+            peoplePickerData.append(String(index))
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -153,6 +165,75 @@ class ViewController: UIViewController {
     
     override func viewDidDisappear(animated: Bool) {
         saveData()
+    }
+    
+    
+    @IBAction func onChangeNumOfPeople(sender: UITapGestureRecognizer) {
+        //Create the AlertController
+        let actionSheetController: UIAlertController = UIAlertController(title: "", message: "\n\n\n\n\n", preferredStyle: .Alert)
+        
+        //Create and an option action
+        let okAction: UIAlertAction = UIAlertAction(title: "OK", style: .Default) { action -> Void in
+            //Do some other stuff
+        }
+        actionSheetController.addAction(okAction)
+        
+        // Create and add a text total amount
+        txtTotalAmountPerPeople = UITextField(frame: CGRect(x: 20, y: 30, width: 160, height: 100))
+        txtTotalAmountPerPeople.enabled = false
+        txtTotalAmountPerPeople.borderStyle = .None
+        txtTotalAmountPerPeople.font = UIFont(name: "Avenir Next Ultra Light", size: 60)
+        txtTotalAmountPerPeople.adjustsFontSizeToFitWidth = true
+        txtTotalAmountPerPeople.text = self.lblTotalAmount.text! + " /"
+        actionSheetController.view.addSubview(txtTotalAmountPerPeople)
+        
+        // Create and add a picker view
+        peoplePicker = UIPickerView(frame: CGRect(x: 175, y: 55, width: 50, height: 50))
+        peoplePicker.dataSource = self
+        peoplePicker.delegate = self
+        actionSheetController.view.addSubview(peoplePicker)
+        
+        // Create and add a image view
+        let imageView = UIImageView(frame: CGRect(x: 220, y: 65, width: 30, height: 30))
+        imageView.image = UIImage(named: "person.png")
+        actionSheetController.view.addSubview(imageView)
+        
+        //Present the AlertController
+        self.presentViewController(actionSheetController, animated: true, completion: nil)
+    }
+    
+    
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return peoplePickerData.count;
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int) -> String! {
+        return peoplePickerData[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        let pickerLabel = UILabel()
+        pickerLabel.textColor = UIColor.blackColor()
+        pickerLabel.text = peoplePickerData[row]
+        // pickerLabel.font = UIFont(name: pickerLabel.font.fontName, size: 15)
+        pickerLabel.font = UIFont(name: "Avenir Next Ultra Light", size: 30) // In this use your custom font
+        pickerLabel.textAlignment = NSTextAlignment.Center
+        return pickerLabel
+    }
+    
+    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 50
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let numberOfPeople = row + 1
+        let totalAmountPerPeople = totalAmount / Double(numberOfPeople)
+        txtTotalAmountPerPeople.text = formatter.stringFromNumber(NSNumber(double: totalAmountPerPeople))! + " /"
     }
 }
 
