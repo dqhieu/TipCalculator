@@ -217,7 +217,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         txtTotalAmountPerPeople.borderStyle = .None
         txtTotalAmountPerPeople.font = UIFont(name: "Avenir Next Ultra Light", size: 60)
         txtTotalAmountPerPeople.adjustsFontSizeToFitWidth = true
-        txtTotalAmountPerPeople.text = self.lblTotalAmount.text! + " /"
+        txtTotalAmountPerPeople.text = self.lblTotalAmount.text! + " x"
         actionSheetController.view.addSubview(txtTotalAmountPerPeople)
         
         // Create and add a picker view
@@ -265,7 +265,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let numberOfPeople = row + 1
         let totalAmountPerPeople = totalAmount / Double(numberOfPeople)
-        txtTotalAmountPerPeople.text = formatter.stringFromNumber(NSNumber(double: totalAmountPerPeople))! + " /"
+        txtTotalAmountPerPeople.text = formatter.stringFromNumber(NSNumber(double: totalAmountPerPeople))! + " x"
     }
 }
 
